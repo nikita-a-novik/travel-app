@@ -31,8 +31,3 @@ async function postStuff() {
 
 document.getElementById('generate').addEventListener('click', postStuff);
 
-async function retrieveProjectData() {
-    const retrieve = await fetch('/');
-    console.log('success!');
-}
-
