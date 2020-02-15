@@ -1,3 +1,24 @@
+const fetch = require('node-fetch')
+const express = require('express')
+const app = express();
+
+const getParameters = (req) => {
+  const {
+    query: {
+      location = '',
+      date = ''
+    }
+  } = req || {}
+  return { location, date }
+}
+
+app.use('/weather', async (req, res) => {
+  const { location = '', date = '' } = getParameters(req);
+  console.warn(location, date);
+  const result = await getFutureWeatherDataForLocation(location, date, fetch);
+  res.send(JSON.stringify(result));
+})
+
 const getRawGeoDataByQuery = async (location, fetch) => {
   const base = 'api.geonames.org'
   const username = 'username=nikitanovik'
@@ -75,3 +96,5 @@ module.exports = {
   getRawFutureWeatherData,
   getUnixTimestamp,
 }
+
+app.listen(process.env.PORT || 3000,  () => console.warn('App is Running'))
