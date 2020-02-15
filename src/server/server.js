@@ -1,6 +1,4 @@
-function test() {
-    const t = `http://api.geonames.org/search?username=nikitanovik&type=json&q=Paris`
-}
+import f from 'node-fetch'
 
 const getRawGeoDataByQuery = async (location) => {
     const base = 'api.geonames.org'
@@ -8,7 +6,7 @@ const getRawGeoDataByQuery = async (location) => {
     const type = 'type=json'
     const query = `q=${location}`
     const url = `http://${base}/search?${username}&${type}&${query}`
-    return fetch(url).then(res => res.json())
+    return f(url).then(res => res.json())
 }
 
 const getFutureWeatherDataForLocation = async (location) => {
