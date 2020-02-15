@@ -19,6 +19,12 @@ app.use('/weather', async (req, res) => {
   res.send(JSON.stringify(result));
 })
 
+app.use('/image', async (req, res) => {
+  const { location = '' } = getParameters(req);
+  const result = await getImageForLocation(location, fetch);
+  res.send(result)
+})
+
 const getRawGeoDataByQuery = async (location, fetch) => {
   const base = 'api.geonames.org'
   const username = 'username=nikitanovik'
@@ -77,6 +83,29 @@ const getFutureWeatherDataForLocation = async (location, dateString, fetch) => {
   const rawFutureWeatherData = await getRawFutureWeatherData(geoData, date, fetch)
   const processedFutureWeatherData = getFutureWeatherData(rawFutureWeatherData)
   return processedFutureWeatherData
+}
+
+const getRawImageDataForLocation = async (location, fetch) => {
+  const key = 'key=15275803-5dc29be62cd1ecb796af7c462'
+  const query = `q=${location}`
+  const base = 'pixabay.com/api'
+  const url = `https://${base}/?${key}&${query}`
+  try {
+    return await fetch(url).then(res => res.json())
+  } catch (e) {
+    return {}
+  }
+}
+
+const getImageForLocation = async (location, fetch) => {
+  const {
+    hits: [
+      {
+        webformatURL = ''
+      } = {}
+    ] = []
+  } = await getRawImageDataForLocation(location, fetch) || {}
+  return webformatURL;
 }
 
 const getFutureWeatherData = (weatherData) => {
