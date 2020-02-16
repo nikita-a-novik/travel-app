@@ -22,7 +22,7 @@ app.use('/weather', async (req, res) => {
 app.use('/image', async (req, res) => {
   const { location = '' } = getParameters(req);
   const result = await getImageForLocation(location, fetch);
-  res.send(result)
+  res.send(JSON.stringify(result))
 })
 
 const getRawGeoDataByQuery = async (location, fetch) => {
@@ -44,11 +44,13 @@ const getGeoData = (rawGeoData) => {
       {
         lng = 0,
         lat = 0,
-        countryName = ''
+        name = '',
+        countryName = '',
       } = {}
     ] = []
   } = rawGeoData || {}
   return {
+    name,
     longitude: lng,
     latitude: lat,
     country: countryName
@@ -81,8 +83,8 @@ const getFutureWeatherDataForLocation = async (location, dateString, fetch) => {
   const rawGeoData = await getRawGeoDataByQuery(location, fetch)
   const geoData = getGeoData(rawGeoData)
   const rawFutureWeatherData = await getRawFutureWeatherData(geoData, date, fetch)
-  const processedFutureWeatherData = getFutureWeatherData(rawFutureWeatherData)
-  return processedFutureWeatherData
+  const summary = getFutureWeatherData(rawFutureWeatherData)
+  return { ...summary, ...geoData }
 }
 
 const getRawImageDataForLocation = async (location, fetch) => {
@@ -109,12 +111,25 @@ const getImageForLocation = async (location, fetch) => {
 }
 
 const getFutureWeatherData = (weatherData) => {
+  // console.warn(weatherData)
   const {
     currently: {
       summary = ''
+    } = {},
+    daily: {
+      data: [
+        {
+          temperatureLow = 0,
+          temperatureHigh = 0
+        } = {}
+      ] = []
     } = {}
   } = weatherData || {};
-  return summary
+  return {
+    summary,
+    temperatureHigh,
+    temperatureLow 
+  }
 }
 
 module.exports = {
