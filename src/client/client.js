@@ -1,3 +1,5 @@
+import './styles/style.scss'
+
 const formatDateInput = (input) => {
   const cleanInput = input
   .replace(/\//g, '')
