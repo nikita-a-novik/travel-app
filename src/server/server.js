@@ -4,7 +4,6 @@ const path = require('path')
 const bodyParser = require('body-parser')
 
 const app = express();
-const jsonParser = bodyParser.json()
 
 // Storage
 
@@ -12,18 +11,25 @@ let trips = [];
 
 // Endpoints
 
+app.use(bodyParser.json())
+
 app.use('/', express.static(path.join(__dirname, '../client')))
 
-app.post('/trip', jsonParser, async (req, res) => {
+app.post('/trip', async (req, res) => {
+  console.warn(req.body)
   const { location, date } = getTripInformation(req)
-  trips = [...trips, (await generateTripData(location, date, fetch))]
+  trips = [(await generateTripData(location, date, fetch)), ...trips]
   res.send({})
 })
 
-app.delete('/trip', jsonParser, (req, res) => {
+app.delete('/trip', (req, res) => {
   const id = getTripIdFromRequest(req)
-  trips = trips.filter(i = i.id !== id)
+  trips = trips.filter(i => i.id !== id)
   res.send({})
+})
+
+app.get('/trip', (req, res) => {
+  res.send(JSON.stringify(trips))
 })
 
 app.use('/weather', async (req, res) => {
@@ -140,13 +146,23 @@ const getRawFutureWeatherData = async (geoData, date, fetch) => {
   }
 }
 
+const getDaysAway = (date) => {
+  const currentTime = new Date().valueOf()
+  const travelTime = date.valueOf()
+  const daysLeft = Math.round((travelTime - currentTime) / (1000 * 60 * 60 * 24))
+  return daysLeft
+}
+
 const getFutureWeatherDataForLocation = async (location, dateString, fetch) => {
   const date = new Date(dateString)
   const rawGeoData = await getRawGeoDataByQuery(location, fetch)
   const geoData = getGeoData(rawGeoData)
   const rawFutureWeatherData = await getRawFutureWeatherData(geoData, date, fetch)
   const summary = getFutureWeatherData(rawFutureWeatherData)
-  return { ...summary, ...geoData }
+  const image = await getImageForLocation(location, fetch)
+  const daysAway = getDaysAway(date)
+  console.warn(image);
+  return { ...summary, ...geoData, image, daysAway, date: dateString }
 }
 
 const getRawImageDataForLocation = async (location, fetch) => {
