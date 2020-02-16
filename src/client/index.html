@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel App</title>
+</head>
+<body>
+  <body>
+    <section class='top-section'>
+      <div class='title'>
+        <h1>TRIP PLANNER</h1>
+      </div>
+      <div class='search'>
+        <div class='search-inputs'>
+          <div class='input'>
+            <span>My trip to:</span>
+            <input id='location-input' placeholder='Enter Location'>
+          </div>
+          <div class='input'>
+            <span>Departing:</span>
+            <input id='departure-input' placeholder='MM/DD/YYYY'>
+          </div>
+        </div>
+        <button class='add-trip'>Add Trip</button>
+      </div>
+    </section>
+    <section class='bottom-section'>
+      <div class='bottom-header'>
+        <h2>My trips</h2>
+      </div>
+      <div class='trips'>
+        <div class='trip' style='display: none'>
+          <div class='left'>
+            <image src=''/>
+          </div>
+          <div class='right'>
+            <div class='description'>
+              <p>My trip to:<span class='destination'></span></p>
+            </div>
+            <div class='description'>
+              <p>Departing:<span class='departure'></span></p>
+            </div>
+            <button class='remove'>Remove Trip</button>
+            <div class='until'>
+              <p><span class='destination'></span> is <span class='days'></span> days away</p>
+            </div>
+            <div class='weather'>
+              <p>Typical weather for then is:</p>
+              <p>
+                <span>High - <span class='high'></span>, Low - <span class='low'></span></span>
+                <span>Mostly <span class='summary'></span> throughout the day</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src='./client.js'></script>
+  </body>
+</body>
+</html>

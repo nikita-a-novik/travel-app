@@ -6,10 +6,20 @@ const {
   getRawGeoDataByQuery,
   getUnixTimestamp,
   getRawFutureWeatherData,
-  getFutureWeatherData
+  getFutureWeatherData,
+  generateRandomId,
+  generateTripData
 } = require('../server');
 
 describe('Server', () => {
+  it('should generate unique id', () => {
+    console.warn(generateRandomId())
+  })
+  it.skip('should get geographic information based on city', async (done) => {
+    const tripData = await generateTripData('Boulder', '02/15/2020', f);
+    console.warn(tripData)
+    done()
+  })
   it.skip('should get geographic information based on city', async (done) => {
     const processedFutureWeatherData = await getFutureWeatherDataForLocation('Boulder', '02/15/2020', f);
     console.warn(processedFutureWeatherData)

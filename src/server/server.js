@@ -1,16 +1,30 @@
 const fetch = require('node-fetch')
 const express = require('express')
-const app = express();
+const path = require('path')
+const bodyParser = require('body-parser')
 
-const getParameters = (req) => {
-  const {
-    query: {
-      location = '',
-      date = ''
-    }
-  } = req || {}
-  return { location, date }
-}
+const app = express();
+const jsonParser = bodyParser.json()
+
+// Storage
+
+let trips = [];
+
+// Endpoints
+
+app.use('/', express.static(path.join(__dirname, '../client')))
+
+app.post('/trip', jsonParser, async (req, res) => {
+  const { location, date } = getTripInformation(req)
+  trips = [...trips, (await generateTripData(location, date, fetch))]
+  res.send({})
+})
+
+app.delete('/trip', jsonParser, (req, res) => {
+  const id = getTripIdFromRequest(req)
+  trips = trips.filter(i = i.id !== id)
+  res.send({})
+})
 
 app.use('/weather', async (req, res) => {
   const { location = '', date = '' } = getParameters(req);
@@ -24,6 +38,54 @@ app.use('/image', async (req, res) => {
   const result = await getImageForLocation(location, fetch);
   res.send(JSON.stringify(result))
 })
+
+// Logic
+
+// This is the simplest way I found
+// to create a unique id
+const generateRandomId = () => `\
+${Math.round(Math.random()*10000)}-\
+${Math.round(Math.random()*10000)}-\
+${Math.round(Math.random()*10000)}-\
+${Math.round(Math.random()*10000)}`
+
+const generateTripData = async (location, date, fetch) => ({
+  id: generateRandomId(),
+  // I want to get data from the combined endpoints
+  // (it will be an object) and spread it here.
+  // All I really need is to put an id on top of it,
+  // so that I can later delete it or update it...
+  ...(await getFutureWeatherDataForLocation(location, date, fetch))
+})
+
+const getTripIdFromRequest = (req) => {
+  const {
+    body: {
+      id = ''
+    } = {}
+  } = req
+  return id
+}
+
+const getTripInformation = (req) => {
+  const {
+    body: {
+      location = '',
+      date = ''
+    } = {}
+  } = req
+  return { location, date }
+}
+
+const getParameters = (req) => {
+  const {
+    query: {
+      location = '',
+      date = ''
+    }
+  } = req || {}
+  return { location, date }
+}
 
 const getRawGeoDataByQuery = async (location, fetch) => {
   const base = 'api.geonames.org'
@@ -111,7 +173,6 @@ const getImageForLocation = async (location, fetch) => {
 }
 
 const getFutureWeatherData = (weatherData) => {
-  // console.warn(weatherData)
   const {
     currently: {
       summary = ''
@@ -139,6 +200,8 @@ module.exports = {
   getRawGeoDataByQuery,
   getRawFutureWeatherData,
   getUnixTimestamp,
+  generateRandomId,
+  generateTripData
 }
 
 app.listen(process.env.PORT || 3000,  () => console.warn('App is Running'))
