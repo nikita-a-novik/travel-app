@@ -27,7 +27,7 @@
   "scripts": {
     "test": "jest --env=jsdom",
     "build:prod": "rm -rf ./dist && webpack --config webpack.prod.js && cp ./src/server/server.js ./dist",
-    "start:dev": "webpack-dev-server --config webpack.prod.js",
+    "start:dev": "webpack-dev-server -w --config webpack.dev.js",
     "start": "node ./dist/server.js"
   },
   "repository": {

@@ -9,7 +9,7 @@ const formatDateInput = (input) => {
   const year = cleanInput.substring(4,8)
   const outputDay = (day ? `/${day}` : '');
   const outputYear = (year ? `/${year}` : '')
-  return `${month}` + outputDay + outputYear 
+  return `${month}` + outputDay + outputYear
 }
 
 const isDev = false

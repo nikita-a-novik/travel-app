@@ -7,7 +7,11 @@ module.exports = {
     entry: './src/client/client.js',
     mode: 'development',
     devtool: 'source-map',
+    watch: true,
     stats: 'verbose',
+    watchOptions: {
+        ignored: /node_modules/
+    },
     module: {
         rules: [
             {
@@ -17,7 +21,7 @@ module.exports = {
             },
             {
                 test: /\.s(a|c)ss$/,
-                exclude: /\.module.(s(a|c)ss)$/,
+                exclude: /node_modules/,
                 loader: [
                     'style-loader',
                     'css-loader',
@@ -31,14 +35,14 @@ module.exports = {
             template: "./src/client/index.html",
             filename: "./index.html",
         }),
-        new CleanWebpackPlugin({
-            // Simulate the removal of files
-            dry: true,
-            // Write Logs to Console
-            verbose: true,
-            // Automatically remove all unused webpack assets on rebuild
-            cleanStaleWebpackAssets: true,
-            protectWebpackAssets: false
-        })
+        // new CleanWebpackPlugin({
+        //     // Simulate the removal of files
+        //     dry: true,
+        //     // Write Logs to Console
+        //     verbose: true,
+        //     // Automatically remove all unused webpack assets on rebuild
+        //     cleanStaleWebpackAssets: true,
+        //     protectWebpackAssets: false
+        // })
     ]
 }
