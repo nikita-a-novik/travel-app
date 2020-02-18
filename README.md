@@ -1,7 +1,7 @@
 # Weather-Journal App Project
 
 ## Overview
-The purpose of this application is to allow you to store information of your future trips. (**destination** and **date of departure**)
+The purpose of this application is to allow you to store information about your future trips.
 
 **To run project:** `npm run build` and `npm run start`
 
