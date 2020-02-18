@@ -4,7 +4,8 @@ const {
   getAllTrips,
   removeAllTrips,
   formatDateInput,
-  appendTrip
+  appendTrip,
+  onLoadEventListener
 } = require('./js/app')
 
 document.addEventListener('getAllTrips', async () => {
@@ -13,10 +14,7 @@ document.addEventListener('getAllTrips', async () => {
   trips.forEach(t => appendTrip(t))
 })
 
-window.addEventListener('load', () => {
-  removeAllTrips()
-  document.dispatchEvent(new Event('getAllTrips'))
-})
+window.addEventListener('load', onLoadEventListener)
 
 document.addEventListener('keyup', e => {
   const {

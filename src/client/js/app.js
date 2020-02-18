@@ -85,6 +85,11 @@ const removeAllTrips = () => {
   trips.forEach(t => t.parentElement.removeChild(t)) // Remove element
 }
 
+const onLoadEventListener = () => {
+  removeAllTrips()
+  document.dispatchEvent(new Event('getAllTrips'))
+}
+
 const appendTrip = (tripData) => {
   const {
     id,
@@ -135,5 +140,6 @@ module.exports = {
   getWeatherData,
   removeAllTrips,
   getAllTrips,
-  appendTrip
+  appendTrip,
+  onLoadEventListener
 }
