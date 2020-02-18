@@ -1,5 +1,3 @@
-import './styles/style.scss'
-
 const formatDateInput = (input) => {
   const cleanInput = input
   .replace(/\//g, '')
@@ -61,7 +59,6 @@ const getImage = async (location) => {
   try {
       return await fetch(url).then(res => res.json())
   } catch (e) {
-      console.warn(e)
       return {}
   }
 }
@@ -81,28 +78,6 @@ const getDepartureInput = () => {
   const { value } = document.querySelector('#departure-input');
   return value;
 }
-
-document.addEventListener('getAllTrips', async () => {
-  const trips = await getAllTrips()
-  removeAllTrips()
-  trips.forEach(t => appendTrip(t))
-})
-
-window.addEventListener('load', () => {
-  console.warn('load')
-  removeAllTrips()
-  document.dispatchEvent(new Event('getAllTrips'))
-})
-
-document.addEventListener('keyup', e => {
-  const {
-    target = {}
-  } = e || {};
-  if (target.id === 'departure-input') {
-    const processedValue = formatDateInput(target.value)
-    target.value = processedValue
-  }
-})
 
 const removeAllTrips = () => {
   const trips = Array.from(document.querySelectorAll('.trip'));
@@ -157,5 +132,8 @@ module.exports = {
   formatDateInput,
   getDataForTrip,
   getImage,
-  getWeatherData
+  getWeatherData,
+  removeAllTrips,
+  getAllTrips,
+  appendTrip
 }

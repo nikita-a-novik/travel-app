@@ -16,7 +16,6 @@ app.use(bodyParser.json())
 app.use('/', express.static(path.join(__dirname, '.')))
 
 app.post('/trip', async (req, res) => {
-  console.warn(req.body)
   const { location, date } = getTripInformation(req)
   trips = [(await generateTripData(location, date, fetch)), ...trips]
   res.send({})
@@ -34,7 +33,6 @@ app.get('/trip', (req, res) => {
 
 app.use('/weather', async (req, res) => {
   const { location = '', date = '' } = getParameters(req);
-  console.warn(location, date);
   const result = await getFutureWeatherDataForLocation(location, date, fetch);
   res.send(JSON.stringify(result));
 })
@@ -161,7 +159,6 @@ const getFutureWeatherDataForLocation = async (location, dateString, fetch) => {
   const summary = getFutureWeatherData(rawFutureWeatherData)
   const image = await getImageForLocation(location, fetch)
   const daysAway = getDaysAway(date)
-  console.warn(image);
   return { ...summary, ...geoData, image, daysAway, date: dateString }
 }
 

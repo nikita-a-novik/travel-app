@@ -3,7 +3,9 @@
 $dark-grey: #444;
 $semi-dark-grey: #777;
 $green: #55BF3A;
+$green-hover: #55BF3A55;
 $red: #D38383;
+$red-hover: #D3838355;
 
 body {
   color: $dark-grey;
@@ -62,6 +64,9 @@ body {
         }
       }
       .add-trip {
+        &:hover {
+          background: $green-hover;
+        }
         width: 260px;
         height: 54px;
         border: none;
@@ -79,22 +84,19 @@ body {
   }
   .bottom-section {
     padding: 0 40px;
-    .bottom-header {
-      border-bottom: 1px solid rgba(0,0,0,0.2);
-    }
     .trips {
       .trip {
         display: flex;
-        flex-direction: row;
-        border-bottom: 1px solid rgba(0,0,0,0.2);
+        flex-direction: column;
         .left {
           display: flex;
           flex: 1;
-          max-width: 50%;
+          width: 100%;
           justify-content: center;
           align-items: top;
           img, image {
             height: 100%;
+            width: 100%;
             overflow: hidden;
           }
         }
@@ -114,6 +116,9 @@ body {
             }
           }
           .remove {
+            &:hover {
+              background: $red-hover;
+            }
             width: 260px;
             height: 54px;
             border: none;
@@ -146,3 +151,62 @@ body {
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  body {
+    .top-section {
+      .title {
+        h1 {
+          font-size: 35px;
+        }
+      }
+      .search {
+        .search-inputs {
+          .input {
+            span {
+              font-size: 18px;
+              min-width: 150px;
+            }
+            input {
+              max-width: 150px;
+              min-width: unset;
+              width: unset;
+              font-size: 18px;
+            }
+          }
+        }
+        .add-trip {
+          font-size: 18px;
+        }
+      }
+    }
+    .bottom-section {
+      .trips {
+        .trip {
+          .right {
+            .description {
+              p, p span {
+                font-size: 18px;
+              }
+            }
+            .remove {
+              font-size: 18px;
+            }
+            .until {
+              font-size: 18px;
+            }
+            .weather {
+              p {
+                font-size: 18px;
+              }
+              span {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

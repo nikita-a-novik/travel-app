@@ -3,7 +3,7 @@ const fetch = require("node-fetch")
 const {
     formatDateInput,
     getDataForTrip
-} = require('../client')
+} = require('../js/app')
 
 describe('Client', () => {
     it('should format date', () => {

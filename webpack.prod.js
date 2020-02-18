@@ -3,9 +3,10 @@ const webpack = require('webpack')
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebPackPlugin = require("html-webpack-plugin")
+const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = {
-    entry: './src/client/client.js',
+    entry: './src/client/index.js',
     mode: 'production',
     module: {
         rules: [
@@ -33,9 +34,10 @@ module.exports = {
             chunkFilename: '[id].css'
         }),
         new HtmlWebPackPlugin({
-            template: "./src/client/index.html",
+            template: "./src/client/views/index.html",
             filename: "./index.html",
-        })
+        }),
+        new WorkboxPlugin.GenerateSW()
     ],
     output: {
         filename: '[name].bundle.js',
